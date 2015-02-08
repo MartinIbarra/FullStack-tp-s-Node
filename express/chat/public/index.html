@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+  <head>
+    <title>chat loco!</title>
+    <style>
+        * {
+        	margin: 0; 
+        	padding: 0; 
+        	box-sizing: border-box; 
+       	}
+        body { 
+        	font: 13px Helvetica, Arial; 
+        }
+        form { 
+        	background: #000; 
+        	padding: 3px; 
+        	position: fixed; 
+        	bottom: 0; 
+        	width: 100%; 
+        }
+        form input { 
+        	border: 0; 
+        	padding: 10px; 
+        	width: 90%; 
+        	margin-right: .5%; 
+        }
+        form button { 
+        	width: 9%; 
+        	background: rgb(130, 224, 255); 
+        	border: none; 
+        	padding: 10px; 
+        }
+        #messages { 
+        	list-style-type: none; 
+        	margin: 0; 
+        	padding: 0; 
+        }
+        #messages li { 
+        	padding: 5px 10px; 
+        }
+        #messages li:nth-child(odd) { 
+        	background: #eee; 
+        }
+    </style>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <!-- <video autoplay controls></video> -->
+    <form action="POST">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <div id="nombre"></div>
+    <script>
+    "use strict";
+    window.URL = window.URL || window.webkitURL;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+    navigator.getUserMedia({
+        audio: true,
+        video: true
+    }, function(vid) {
+        document.querySelector('video').src = window.URL.createObjectURL(vid);
+    }, function(err) {
+        console.log(err);
+    });
+
+    var socket = io.connect();
+    console.log(socket);
+    // Emit ready event.
+    socket.emit('ready', prompt('What is your name?'));
+
+    // Listen for get-feelings event.
+    socket.on('get-feelings', function() {
+        socket.emit('send-feelings', prompt('How do you feel?'));
+    });
+
+    // Listen for session event.
+    socket.on('session', function(data) {
+        var message = 'Hey ' + data.name + '!\n\n';
+        message += 'Server says you feel ' + data.feelings + '\n';
+        message += 'I know these things because sessions work!\n\n';
+        message += 'Also, you joined ' + data.loginDate + '\n';
+        alert(message);
+    });
+
+
+    $('form').submit(function() {
+        socket.emit('chatMessage', $('#m').val());
+        $('#m').val('');
+        return false;
+    });
+    socket.on('chatMessage', function(data) {
+        console.log('esta es la data: '+data);
+        console.log('esta es la data.msj: '+data.msj);
+        $('#messages').append($('<li>').text(data.msj));
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<title></title>
+	<style type="text/css">
+	h1{
+		text-align: center;
+	}
+	p{
+		text-align: left;
+	}
+	</style>
+</head>
+<body>
+<h1>tp 19</h1>
+<button id="ejemploGet">GET a ejemplo</button> <div id="ejGet"></div></br></br>
+<button id="dir1Get">GET a directorio1</button></br></br>
+<button id="dir2Get">GET a directorio2</button></br></br>
+<button id="ejemploSubDirsGet">GET a ejemplo dentro de los dir's</button></br></br>
+<button id="ejemploPost">POST a ejemplo</button></br></br>
+<button id="dir1Post">POST a dir1</button></br></br>
+<button id="dir2Post">POST a dir2</button></br></br>
+<button id="ejemploSubDirsPost">POST a ejemplo dentro de los dir's</button>
+<script type="text/javascript">
+"use strict";
+	$('#ejemploGet').on('click',function(){
+		$.ajax({
+			url:'/ejemplo.txt'
+		}).done(function(data){
+			$('#ejGet').inner('<p>'+data.toString()+'</p>');
+		});
+	});
+</script>
+</body>
+</html>

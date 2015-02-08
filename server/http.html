@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HTTP Node.js</title>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+  <a id="linkUsuarios">Usuarios</a>
+  <script type="text/javascript">
+    $('#linkUsuarios').click(function(e,data){
+      e.preventDefault();
+      $.ajax({url:"/usuarios"}).done(function(data){
+        console.log(data);
+      });
+    });
+  </script>
+</body>
+</html>

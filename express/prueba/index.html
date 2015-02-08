@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<style type="text/css">
+	body{
+		background: green;
+	}
+	#lista{
+		height: 200px;
+		width: 200px;
+		background: red;
+		color: black;
+	}
+	</style>
+</head>
+<body>
+<input type="button"id="usuarios"value="usuarios"/>
+<div id="lista">
+	
+</div>
+<script type="text/javascript">
+"use strict";
+var div = $('#lista');
+var lista = '';
+	$('#usuarios').on('click',function(){
+		$.ajax({
+			url:'/usuarios'
+		}).done(function(data){
+			lista = data;
+			div.append('<p>'+lista+'</p>');
+		});
+	});
+</script>
+</body>
+</html>
